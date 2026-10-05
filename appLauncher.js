@@ -9,7 +9,6 @@
 
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
-import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
@@ -77,8 +76,6 @@ class MacAppItem extends St.Button {
         label.clutter_text.set_ellipsize(Pango.EllipsizeMode.END);
         label.clutter_text.set_max_length(18);
         container.add_child(label);
-
-        this.connect('clicked', () => this._activate());
 
         // Right-click event handler
         this.connect('button-press-event', (_actor, event) => {
@@ -292,9 +289,21 @@ export const AppLauncher = GObject.registerClass({
     }
 
     _findDockActor() {
-        for (const actor of Main.layoutManager._chrome.get_actors()) {
-            if (actor.name === 'dock-container' || actor.has_style_class_name?.('dock-container'))
-                return actor;
+        if (globalThis.arreraDock instanceof Clutter.Actor)
+            return globalThis.arreraDock;
+
+        if (Main.uiGroup) {
+            for (const child of Main.uiGroup.get_children()) {
+                if (!child)
+                    continue;
+                const name = child.name || '';
+                if (name === 'dock-container' ||
+                    name === 'arrera-dock-container' ||
+                    name === 'dashtodockContainer' ||
+                    child.has_style_class_name?.('dock-container') ||
+                    child.has_style_class_name?.('arrera-dock-container'))
+                    return child;
+            }
         }
         return null;
     }
@@ -515,9 +524,22 @@ export const AppLauncher = GObject.registerClass({
         }
     }
 
-    open() {
-        if (this._isOpen)
+    selectApp(appId) {
+        if (!appId)
             return;
+        const app = this._appSystem.lookup_app(appId);
+        if (app) {
+            this._searchEntry?.set_text(app.get_name());
+            this._refilterApps();
+        }
+    }
+
+    open(appId = null) {
+        if (this._isOpen) {
+            if (appId)
+                this.selectApp(appId);
+            return;
+        }
 
         if (this._allApps.length === 0)
             this._reloadApps();
@@ -528,7 +550,12 @@ export const AppLauncher = GObject.registerClass({
         this._isOpen = true;
 
         // Reset search and scroll
-        this._searchEntry.set_text('');
+        if (appId) {
+            const app = this._appSystem.lookup_app(appId);
+            this._searchEntry.set_text(app ? app.get_name() : '');
+        } else {
+            this._searchEntry.set_text('');
+        }
         const adj = this._scrollView.vadjustment;
         if (adj)
             adj.value = 0;
@@ -647,6 +674,3 @@ export const AppLauncher = GObject.registerClass({
         super.destroy();
     }
 });
-
-export const AppLaucher = AppLauncher;
-export const MacAppLauncher = AppLauncher;
