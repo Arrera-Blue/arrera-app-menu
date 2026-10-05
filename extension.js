@@ -15,8 +15,7 @@ import { AppLauncher } from './appLauncher.js';
 export default class ArreraAppMenuExtension extends Extension {
     enable() {
         // Enregistrement global pour permettre au dock Arrera d'accéder au lanceur
-        global.arreraAppMenu = this;
-        Main.arreraAppMenu = this;
+        globalThis.arreraAppMenu = this;
 
         this._settings = this.getSettings();
         this._superKeyOpensLauncher = this._settings?.get_boolean('super-key-opens-launcher') ?? true;
@@ -36,14 +35,14 @@ export default class ArreraAppMenuExtension extends Extension {
         // Synchronisation avec l'icône d'applications du dock Arrera (si présent)
         this._appLauncher.connectObject(
             'opened', () => {
-                const dock = global.arreraDock || Main.arreraDock;
+                const dock = globalThis.arreraDock;
                 if (dock?._showAppsButton)
                     dock._showAppsButton.add_style_pseudo_class('checked');
                 if (dock?._autohide)
                     dock._showDock?.();
             },
             'closed', () => {
-                const dock = global.arreraDock || Main.arreraDock;
+                const dock = globalThis.arreraDock;
                 if (dock?._showAppsButton)
                     dock._showAppsButton.remove_style_pseudo_class('checked');
                 if (dock?._autohide && !dock.hover && !dock._dockPill?.hover)
@@ -144,9 +143,7 @@ export default class ArreraAppMenuExtension extends Extension {
             this._settings = null;
         }
 
-        if (global.arreraAppMenu === this)
-            delete global.arreraAppMenu;
-        if (Main.arreraAppMenu === this)
-            delete Main.arreraAppMenu;
+        if (globalThis.arreraAppMenu === this)
+            delete globalThis.arreraAppMenu;
     }
 }
