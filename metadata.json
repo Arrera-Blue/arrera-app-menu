@@ -1,0 +1,16 @@
+{
+  "name": "Arrera App Menu",
+  "description": "Menu d'applications moderne et flottant de la distribution Arrera Blue pour GNOME Shell.",
+  "uuid": "app-menu@linux.arrera-software.fr",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "settings-schema": "org.gnome.shell.extensions.app-menu",
+  "url": "https://github.com/Arrera-Blue/arrera-app-menu",
+  "version": 1
+}

@@ -1,0 +1,17 @@
+#!/bin/bash
+# Recompiler les schémas GSettings locaux
+if [ -d "schemas" ]; then
+    glib-compile-schemas schemas/
+    # Enregistrer et compiler le schéma pour gnome-control-center
+    mkdir -p "$HOME/.local/share/glib-2.0/schemas"
+    if [ -f "schemas/org.gnome.shell.extensions.app-menu.gschema.xml" ]; then
+        cp -u schemas/org.gnome.shell.extensions.app-menu.gschema.xml "$HOME/.local/share/glib-2.0/schemas/"
+        glib-compile-schemas "$HOME/.local/share/glib-2.0/schemas"
+    fi
+fi
+
+# S'assurer que l'extension est activée dans la liste des extensions
+gsettings set org.gnome.shell enabled-extensions "['app-menu@linux.arrera-software.fr']"
+
+# Lancer la session de test GNOME Shell
+dbus-run-session -- gnome-shell --devkit

@@ -1,0 +1,4 @@
+build_rpm/
+output/
+*.tar.gz
+schemas/gschemas.compiled
