@@ -5,13 +5,8 @@
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
-
-
-
-
 /* ==========================================================================
    Applications Launcher Panel
-   ========================================================================== */
    ========================================================================== */
 
 /* Fullscreen transparent backdrop catching dismiss clicks */
@@ -112,8 +107,6 @@
     font-weight: 500;
     text-align: center;
 }
-
-/* ==========================================================================
 
 /* ==========================================================================
    Accent Colors Theme Synchronization
@@ -305,96 +298,4 @@
 .accent-slate .mac-app-item:hover {
     background-color: rgba(160, 185, 205, 0.18);
     box-shadow: inset 0 0 0 1px rgba(170, 195, 215, 0.38);
-}
-
-.mac-app-launcher-root {
-    background-color: rgba(0, 0, 0, 0.35);
-}
-
-.mac-app-launcher-window {
-    background-color: rgba(22, 22, 26, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 28px;
-    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7);
-    padding: 18px 24px;
-}
-
-.mac-launcher-header {
-    spacing: 12px;
-    margin-bottom: 20px;
-}
-
-.mac-launcher-title-icon {
-    color: -st-accent-color;
-    margin-right: 4px;
-}
-
-.mac-launcher-search-entry {
-    background-color: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 14px;
-    padding: 7px 16px;
-    color: #ffffff;
-    font-size: 11pt;
-    font-weight: 500;
-    caret-color: -st-accent-color;
-}
-
-.mac-launcher-search-entry:focus {
-    background-color: rgba(255, 255, 255, 0.12);
-    border-color: -st-accent-color;
-    box-shadow: 0 0 0 2px st-transparentize(-st-accent-color, 0.6);
-}
-
-.mac-launcher-close-btn {
-    background-color: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 14px;
-    padding: 5px;
-    color: #94a3b8;
-    transition-duration: 150ms;
-}
-
-.mac-launcher-close-btn:hover {
-    background-color: rgba(255, 255, 255, 0.18);
-    color: #ffffff;
-}
-
-.mac-launcher-scroll {
-    padding: 2px;
-}
-
-.mac-launcher-grid {
-    padding: 4px 2px;
-    spacing: 16px;
-}
-
-.mac-app-item {
-    padding: 8px 4px;
-    border-radius: 16px;
-    transition-duration: 150ms;
-}
-
-.mac-app-item:hover {
-    background-color: rgba(255, 255, 255, 0.12);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-}
-
-.mac-app-item:active {
-    background-color: rgba(255, 255, 255, 0.22);
-}
-
-.mac-app-item-box {
-    spacing: 6px;
-}
-
-.mac-app-icon-bin {
-    margin-bottom: 2px;
-}
-
-.mac-app-label {
-    color: #f1f5f9;
-    font-size: 9pt;
-    font-weight: 500;
-    text-align: center;
 }

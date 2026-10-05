@@ -32,15 +32,12 @@ glib-compile-schemas schemas/
 rm -rf %{buildroot}
 
 install -d -m 0755 %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}
-install -d -m 0755 %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/icons
 install -d -m 0755 %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/schemas
 
 install -p -m 0644 metadata.json %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 install -p -m 0644 extension.js %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 install -p -m 0644 appLauncher.js %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 install -p -m 0644 stylesheet.css %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
-
-install -p -m 0644 icons/* %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/icons/
 
 install -p -m 0644 schemas/org.gnome.shell.extensions.app-menu.gschema.xml %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/schemas/
 install -p -m 0644 schemas/gschemas.compiled %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/schemas/
