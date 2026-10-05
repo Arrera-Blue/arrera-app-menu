@@ -10,8 +10,8 @@ if [ -d "schemas" ]; then
     fi
 fi
 
-# S'assurer que l'extension est activée dans la liste des extensions
-gsettings set org.gnome.shell enabled-extensions "['app-menu@linux.arrera-software.fr']"
+# S'assurer que les extensions sont activées dans la liste des extensions
+gsettings set org.gnome.shell enabled-extensions "['dock@linux.arrera-software.fr', 'app-menu@linux.arrera-software.fr']"
 
 # Lancer la session de test GNOME Shell
 dbus-run-session -- gnome-shell --devkit

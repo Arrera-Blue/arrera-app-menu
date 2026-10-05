@@ -8,11 +8,5 @@
       <description>Si activé, la touche Super ouvre le menu d'applications Arrera. Si désactivé, elle rétablit le comportement d'origine de GNOME (aperçu des activités).</description>
     </key>
 
-    <key name="show-panel-button" type="b">
-      <default>true</default>
-      <summary>Bouton dans la barre supérieure</summary>
-      <description>Affiche une icône dans la barre supérieure pour ouvrir le menu d'applications en un clic.</description>
-    </key>
-
   </schema>
 </schemalist>

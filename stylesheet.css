@@ -6,21 +6,8 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* Top bar panel button */
-.app-menu-panel-button {
-    -natural-hpadding: 8px;
-    -minimum-hpadding: 4px;
-}
 
-.app-menu-panel-button:hover {
-    background-color: rgba(255, 255, 255, 0.10);
-    border-radius: 9999px;
-}
 
-.app-menu-panel-button.checked {
-    background-color: rgba(255, 255, 255, 0.18);
-    border-radius: 9999px;
-}
 
 /* ==========================================================================
    Applications Launcher Panel
