@@ -8,5 +8,11 @@
       <description>Si activé, la touche Super ouvre le menu d'applications Arrera. Si désactivé, elle rétablit le comportement d'origine de GNOME (aperçu des activités).</description>
     </key>
 
+    <key name="replace-gnome-app-menu" type="b">
+      <default>true</default>
+      <summary>Remplacer totalement le menu d'applications GNOME</summary>
+      <description>Remplace complètement la vue et grille d'applications native de GNOME (Super+A, bouton 9 points du Dash, raccourcis et gestes) par le menu d'applications Arrera.</description>
+    </key>
+
   </schema>
 </schemalist>
