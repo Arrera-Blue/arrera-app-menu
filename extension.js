@@ -24,6 +24,7 @@ export default class ArreraAppMenuExtension extends Extension {
         this._settings = this.getSettings();
         this._superKeyOpensLauncher = this._settings?.get_boolean('super-key-opens-launcher') ?? true;
         this._replaceGnomeAppMenu = this._settings?.get_boolean('replace-gnome-app-menu') ?? true;
+        this._compactMode = this._settings?.get_boolean('compact-mode') ?? false;
 
         if (this._settings) {
             this._settings.connectObject(
@@ -39,6 +40,10 @@ export default class ArreraAppMenuExtension extends Extension {
                         else
                             this._disableGnomeAppMenuReplacement();
                     }
+                },
+                'changed::compact-mode', () => {
+                    this._compactMode = this._settings.get_boolean('compact-mode');
+                    this._appLauncher?.setCompactMode?.(this._compactMode);
                 },
                 this
             );
@@ -84,6 +89,10 @@ export default class ArreraAppMenuExtension extends Extension {
 
     get appLauncher() {
         return this._appLauncher;
+    }
+
+    get compactMode() {
+        return this._compactMode;
     }
 
     get isOpen() {

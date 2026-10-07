@@ -18,3 +18,11 @@
 * **Valeurs possibles** :
   * `true` *(défaut)* : Remplace totalement la vue et la grille d'applications native de GNOME.
   * `false` : Conserve la grille d'applications native de GNOME.
+
+---
+
+### `compact-mode` (booléen)
+* **Description** : Affiche le menu sous forme de popover vertical compact au-dessus d'Arrera Dock (aligné selon la position de ses icônes, au centre ou à gauche) ou au centre de l'écran si le dock n'est pas présent.
+* **Valeurs possibles** :
+  * `true` : Active le mode compact vertical au-dessus du dock.
+  * `false` *(défaut)* : Conserve le menu large centré d'origine.

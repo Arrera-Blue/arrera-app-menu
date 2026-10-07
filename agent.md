@@ -91,15 +91,17 @@ Composé de deux classes Clutter/St :
   * Acteur plein écran semi-transparent qui capture les clics hors de la fenêtre pour fermer le lanceur.
   * **Comportement transparent** : détecte si le clic survient sur la barre supérieure (`Main.panel`) ou sur le dock (`_findDockActor()`) et propage l'événement (`EVENT_PROPAGATE`) pour permettre de cliquer directement sur une icône du dock ou un menu système sans double clic.
 * **Fenêtre flottante (`_window`)** :
-  * `St.BoxLayout` vertical centré avec bordure translucide, ombrage profond et angles arrondis (28px).
-  * Dimensions adaptatives calculées selon l'écran principal (`_updateGeometry()`, typiquement 780x540 px avec marges de sécurité).
+  * `St.BoxLayout` vertical avec bordure translucide, ombrage profond et angles arrondis.
+  * Dimensions adaptatives calculées selon l'écran principal et le mode (`_updateGeometry()`) :
+    * Mode standard : centré, 780x540 px, grille 7 colonnes (`COLUMNS = 7`).
+    * Mode compact (`compact-mode`) : portrait vertical (560x630 px max), grille 6 colonnes (`COMPACT_COLUMNS = 6`), positionné au-dessus d'Arrera Dock (aligné à gauche ou au centre selon les icônes du dock) ou au centre de l'écran en repli.
 * **En-tête de recherche (`_buildHeader`)** :
   * `St.Entry` pour la recherche temps réel.
   * Raccourcis gérés : `Échap` (vide le champ puis ferme), `Super` (ferme), `Entrée` (lance la première application filtrée via `_launchFirstApp()`).
   * Bouton croix pour fermer à la souris.
 * **Grille défilable (`_buildGrid`, `_refilterApps`)** :
   * `St.ScrollView` avec barres de défilement automatiques et gestion du défilement fluide souris/touchpad.
-  * Grille organisée en lignes de 7 colonnes (`COLUMNS = 7`). Si la dernière ligne a moins de 7 éléments, des widgets d'espacement vides (`dummy`) maintiennent l'alignement strict.
+  * Grille organisée en lignes de 7 colonnes (ou 6 en mode compact). Si la dernière ligne a moins d'éléments, des widgets d'espacement vides (`dummy`) maintiennent l'alignement strict.
 * **Filtrage des applications** :
   * Écoute `Shell.AppSystem.get_default().connectObject('installed-changed', ...)` pour rafraîchir la liste si une application est installée ou désinstallée.
   * Filtre insensible à la casse à la fois sur le nom de l'application et l'ID du fichier `.desktop`.
@@ -126,6 +128,7 @@ Le schéma est défini dans [schemas/org.gnome.shell.extensions.app-menu.gschema
 |---|---|---|---|---|
 | `super-key-opens-launcher` | `b` (booléen) | `true` | `true`, `false` | Si activé, la touche Super ouvre le menu d'applications. Si désactivé, rétablit le comportement d'origine GNOME (aperçu des activités). |
 | `replace-gnome-app-menu` | `b` (booléen) | `true` | `true`, `false` | Si activé, remplace totalement la vue et la grille d'applications native de GNOME (Super+A, bouton 9 points du Dash, gestes tactiles) par le menu Arrera. |
+| `compact-mode` | `b` (booléen) | `false` | `true`, `false` | Si activé, affiche le menu sous forme de popover vertical compact au-dessus d'Arrera Dock (aligné selon les icônes du dock au centre ou à gauche) ou au centre de l'écran. |
 
 ---
 

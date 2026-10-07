@@ -4,6 +4,7 @@
 SCHEMA="org.gnome.shell.extensions.app-menu"
 KEY_SUPER="super-key-opens-launcher"
 KEY_REPLACE="replace-gnome-app-menu"
+KEY_COMPACT="compact-mode"
 
 # Couleurs pour le terminal
 GREEN="\033[0;32m"
@@ -58,6 +59,7 @@ while true; do
     clear
     val_super=$(get_val "$KEY_SUPER")
     val_replace=$(get_val "$KEY_REPLACE")
+    val_compact=$(get_val "$KEY_COMPACT")
 
     echo -e "${BLUE}${BOLD}========================================${RESET}"
     echo -e "${BOLD}   Configuration - Arrera App Menu   ${RESET}"
@@ -65,12 +67,13 @@ while true; do
     echo ""
     echo -e " 1) Touche Super ouvre le menu         : $(format_status "$val_super")"
     echo -e " 2) Remplacement total du menu GNOME   : $(format_status "$val_replace")"
+    echo -e " 3) Mode compact au-dessus du dock     : $(format_status "$val_compact")"
     echo ""
-    echo -e " r) Réinitialiser les valeurs par défaut (tout activer)"
+    echo -e " r) Réinitialiser les valeurs par défaut"
     echo -e " q) Quitter"
     echo ""
     echo -e "${BLUE}----------------------------------------${RESET}"
-    read -rp "Choisissez une option (1, 2, r, q) : " choix
+    read -rp "Choisissez une option (1, 2, 3, r, q) : " choix
 
     case "$choix" in
         1)
@@ -79,9 +82,13 @@ while true; do
         2)
             toggle_val "$KEY_REPLACE"
             ;;
+        3)
+            toggle_val "$KEY_COMPACT"
+            ;;
         r|R)
             set_val "$KEY_SUPER" true
             set_val "$KEY_REPLACE" true
+            set_val "$KEY_COMPACT" false
             ;;
         q|Q)
             echo "Au revoir !"

@@ -20,17 +20,21 @@ import { AppMenu } from 'resource:///org/gnome/shell/ui/appMenu.js';
 import * as BoxPointer from 'resource:///org/gnome/shell/ui/boxpointer.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
-const COLUMNS = 7;
+const DEFAULT_COLUMNS = 7;
+const COMPACT_COLUMNS = 6;
 const ICON_SIZE = 56;
+const COMPACT_ICON_SIZE = 48;
 const WINDOW_WIDTH = 780;
 const WINDOW_HEIGHT = 540;
+const COMPACT_WINDOW_WIDTH = 560;
+const COMPACT_WINDOW_HEIGHT = 630;
 
 /**
  * Individual Application Item in the grid
  */
 const MacAppItem = GObject.registerClass(
 class MacAppItem extends St.Button {
-    _init(app, launcher) {
+    _init(app, launcher, compact = false) {
         super._init({
             style_class: 'mac-app-item',
             reactive: true,
@@ -42,8 +46,12 @@ class MacAppItem extends St.Button {
 
         this._app = app;
         this._launcher = launcher;
+        this._compact = compact;
         this._menu = null;
         this._menuManager = null;
+
+        if (this._compact)
+            this.add_style_class_name('compact');
 
         const container = new St.BoxLayout({
             vertical: true,
@@ -55,7 +63,8 @@ class MacAppItem extends St.Button {
         this.set_child(container);
 
         // Icon texture bin
-        const iconTexture = app.create_icon_texture(ICON_SIZE);
+        const iconSize = this._compact ? COMPACT_ICON_SIZE : ICON_SIZE;
+        const iconTexture = app.create_icon_texture(iconSize);
         const iconBin = new St.Bin({
             child: iconTexture,
             x_align: Clutter.ActorAlign.CENTER,
@@ -74,7 +83,7 @@ class MacAppItem extends St.Button {
         });
         label.clutter_text.set_line_wrap(true);
         label.clutter_text.set_ellipsize(Pango.EllipsizeMode.END);
-        label.clutter_text.set_max_length(18);
+        label.clutter_text.set_max_length(this._compact ? 14 : 18);
         container.add_child(label);
 
         // Right-click event handler
@@ -217,6 +226,7 @@ export const AppLauncher = GObject.registerClass({
         });
 
         this._extension = extension;
+        this._compactMode = this._extension?.compactMode ?? false;
         this._isOpen = false;
         this._prevKeyFocus = null;
         this._allApps = [];
@@ -270,6 +280,8 @@ export const AppLauncher = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._window.set_pivot_point(0.5, 0.5);
+        if (this._compactMode)
+            this._window.add_style_class_name('compact-mode');
         this.add_child(this._window);
 
         this._buildHeader();
@@ -308,6 +320,83 @@ export const AppLauncher = GObject.registerClass({
         return null;
     }
 
+    _getDockInfo() {
+        const dock = globalThis.arreraDock;
+        if (dock && (dock instanceof Clutter.Actor || dock._dockPill)) {
+            const pill = dock._dockPill || dock;
+            let [pillX, pillY] = [0, 0];
+            let [pillW, pillH] = [0, 0];
+            try {
+                [pillX, pillY] = pill.get_transformed_position();
+                [pillW, pillH] = pill.get_transformed_size();
+            } catch (_e) {
+                // Ignore if not mapped yet
+            }
+
+            const position = dock._position || 'bottom';
+
+            let barIconsAlignment = dock._barIconsAlignment;
+            if (!barIconsAlignment && dock._settings) {
+                try {
+                    barIconsAlignment = dock._settings.get_string('bar-icons-alignment');
+                } catch (_e) {
+                    barIconsAlignment = 'center';
+                }
+            }
+            if (!barIconsAlignment)
+                barIconsAlignment = 'center';
+
+            let showAppsX = null;
+            let showAppsY = null;
+            if (dock._showAppsButton && dock._showAppsButton.visible) {
+                try {
+                    const [sx, sy] = dock._showAppsButton.get_transformed_position();
+                    showAppsX = sx;
+                    showAppsY = sy;
+                } catch (_e) {
+                    // Ignore
+                }
+            }
+
+            return {
+                actor: dock,
+                pill,
+                pillX,
+                pillY,
+                pillW,
+                pillH,
+                position,
+                barIconsAlignment,
+                showAppsX,
+                showAppsY,
+            };
+        }
+
+        const genericDock = this._findDockActor();
+        if (genericDock && genericDock.visible) {
+            try {
+                const [pillX, pillY] = genericDock.get_transformed_position();
+                const [pillW, pillH] = genericDock.get_transformed_size();
+                return {
+                    actor: genericDock,
+                    pill: genericDock,
+                    pillX,
+                    pillY,
+                    pillW,
+                    pillH,
+                    position: 'bottom',
+                    barIconsAlignment: 'center',
+                    showAppsX: null,
+                    showAppsY: null,
+                };
+            } catch (_e) {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
     _syncAccentColor() {
         const colorName = this._interfaceSettings?.get_string('accent-color') || 'blue';
         const allColors = ['blue', 'teal', 'green', 'yellow', 'orange', 'red', 'pink', 'purple', 'slate'];
@@ -323,6 +412,25 @@ export const AppLauncher = GObject.registerClass({
 
     get isOpen() {
         return this._isOpen;
+    }
+
+    get compactMode() {
+        return this._compactMode;
+    }
+
+    setCompactMode(enabled) {
+        if (this._compactMode === enabled)
+            return;
+        this._compactMode = enabled;
+        if (this._compactMode)
+            this._window?.add_style_class_name('compact-mode');
+        else
+            this._window?.remove_style_class_name('compact-mode');
+
+        if (this._isOpen) {
+            this._updateGeometry();
+            this._refilterApps();
+        }
     }
 
     _buildHeader() {
@@ -476,21 +584,24 @@ export const AppLauncher = GObject.registerClass({
             return true;
         });
 
-        for (let r = 0; r < filtered.length; r += COLUMNS) {
+        const columns = this._compactMode ? COMPACT_COLUMNS : DEFAULT_COLUMNS;
+        const spacing = this._compactMode ? 8 : 12;
+
+        for (let r = 0; r < filtered.length; r += columns) {
             const rowBox = new St.Widget({
                 style_class: 'mac-app-row',
                 layout_manager: new Clutter.BoxLayout({
-                    spacing: 12,
+                    spacing,
                     homogeneous: true,
                 }),
                 x_expand: true,
             });
-            const slice = filtered.slice(r, r + COLUMNS);
+            const slice = filtered.slice(r, r + columns);
             for (const app of slice) {
-                const item = new MacAppItem(app, this);
+                const item = new MacAppItem(app, this, this._compactMode);
                 rowBox.add_child(item);
             }
-            for (let pad = slice.length; pad < COLUMNS; pad++) {
+            for (let pad = slice.length; pad < columns; pad++) {
                 const dummy = new St.Widget({ x_expand: true });
                 rowBox.add_child(dummy);
             }
@@ -506,9 +617,77 @@ export const AppLauncher = GObject.registerClass({
         this.set_position(monitor.x, monitor.y);
         this.set_size(monitor.width, monitor.height);
 
-        const w = Math.min(WINDOW_WIDTH, monitor.width - 40);
-        const h = Math.min(WINDOW_HEIGHT, monitor.height - 120);
+        const targetW = this._compactMode ? COMPACT_WINDOW_WIDTH : WINDOW_WIDTH;
+        const targetH = this._compactMode ? COMPACT_WINDOW_HEIGHT : WINDOW_HEIGHT;
 
+        const maxW = monitor.width - 32;
+        const maxH = monitor.height - 100;
+        const w = Math.min(targetW, maxW);
+        let h = Math.min(targetH, maxH);
+
+        if (!this._compactMode) {
+            this._window.x_align = Clutter.ActorAlign.CENTER;
+            this._window.y_align = Clutter.ActorAlign.CENTER;
+            this._window.margin_left = 0;
+            this._window.margin_top = 0;
+            this._window.margin_right = 0;
+            this._window.margin_bottom = 0;
+            this._window.set_size(w, h);
+            return;
+        }
+
+        // Mode compact vertical
+        const dockInfo = this._getDockInfo();
+        const topPanelHeight = (Main.panel && Main.panel.visible) ? Main.panel.height : 36;
+        const MARGIN_DOCK = 12;
+
+        let targetX;
+        let targetY;
+
+        if (!dockInfo) {
+            // Aucun dock Arrera actif : affichage au centre de l'écran
+            targetX = Math.round((monitor.width - w) / 2);
+            targetY = Math.round((monitor.height - h) / 2);
+        } else if (dockInfo.position === 'left') {
+            const dockRight = (dockInfo.pillX - monitor.x) + dockInfo.pillW;
+            targetX = Math.max(16, dockRight + MARGIN_DOCK);
+            targetY = Math.round((monitor.height - h) / 2);
+        } else if (dockInfo.position === 'right') {
+            const dockLeft = dockInfo.pillX - monitor.x;
+            targetX = Math.max(16, dockLeft - w - MARGIN_DOCK);
+            targetY = Math.round((monitor.height - h) / 2);
+        } else {
+            // Position en bas (standard) : au-dessus du dock
+            const dockTop = (dockInfo.pillY > 0)
+                ? (dockInfo.pillY - monitor.y)
+                : (monitor.height - (dockInfo.pillH || 60));
+
+            const availableHeight = dockTop - topPanelHeight - MARGIN_DOCK - 16;
+            if (availableHeight > 250 && h > availableHeight)
+                h = availableHeight;
+
+            targetY = Math.max(topPanelHeight + 8, dockTop - h - MARGIN_DOCK);
+
+            const isLeftAligned = (dockInfo.barIconsAlignment === 'left');
+
+            if (isLeftAligned) {
+                if (dockInfo.showAppsX !== null) {
+                    const btnRelX = dockInfo.showAppsX - monitor.x;
+                    targetX = Math.max(16, Math.min(monitor.width - w - 16, btnRelX));
+                } else {
+                    targetX = 16;
+                }
+            } else {
+                targetX = Math.round((monitor.width - w) / 2);
+            }
+        }
+
+        this._window.x_align = Clutter.ActorAlign.START;
+        this._window.y_align = Clutter.ActorAlign.START;
+        this._window.margin_left = Math.round(targetX);
+        this._window.margin_top = Math.round(targetY);
+        this._window.margin_right = 0;
+        this._window.margin_bottom = 0;
         this._window.set_size(w, h);
     }
 
@@ -535,6 +714,20 @@ export const AppLauncher = GObject.registerClass({
     }
 
     open(appId = null) {
+        const compact = this._extension?.compactMode ?? false;
+        if (this._compactMode !== compact) {
+            this._compactMode = compact;
+            if (this._compactMode)
+                this._window.add_style_class_name('compact-mode');
+            else
+                this._window.remove_style_class_name('compact-mode');
+        }
+
+        // Afficher le dock si autohide pour calculer la géométrie exacte
+        const dock = this._findDockActor();
+        if (dock?._autohide)
+            dock._showDock?.();
+
         if (this._isOpen) {
             if (appId)
                 this.selectApp(appId);
@@ -564,7 +757,6 @@ export const AppLauncher = GObject.registerClass({
         if (Main.panel && Main.uiGroup.contains(Main.panel))
             Main.uiGroup.set_child_above_sibling(Main.panel, this);
 
-        const dock = this._findDockActor();
         if (dock && Main.uiGroup.contains(dock))
             Main.uiGroup.set_child_above_sibling(dock, this);
 
@@ -574,21 +766,44 @@ export const AppLauncher = GObject.registerClass({
         this.opacity = 0;
         this.visible = true;
 
-        this._window.scale_x = 0.94;
-        this._window.scale_y = 0.94;
+        if (this._compactMode) {
+            this._window.set_pivot_point(0.5, 1.0);
+            this._window.scale_x = 0.95;
+            this._window.scale_y = 0.95;
+            this._window.translation_y = 12;
 
-        this.ease({
-            opacity: 255,
-            duration: 180,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
+            this.ease({
+                opacity: 255,
+                duration: 180,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
 
-        this._window.ease({
-            scale_x: 1.0,
-            scale_y: 1.0,
-            duration: 200,
-            mode: Clutter.AnimationMode.EASE_OUT_BACK,
-        });
+            this._window.ease({
+                scale_x: 1.0,
+                scale_y: 1.0,
+                translation_y: 0,
+                duration: 200,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        } else {
+            this._window.set_pivot_point(0.5, 0.5);
+            this._window.scale_x = 0.94;
+            this._window.scale_y = 0.94;
+            this._window.translation_y = 0;
+
+            this.ease({
+                opacity: 255,
+                duration: 180,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+
+            this._window.ease({
+                scale_x: 1.0,
+                scale_y: 1.0,
+                duration: 200,
+                mode: Clutter.AnimationMode.EASE_OUT_BACK,
+            });
+        }
 
         this._searchEntry.grab_key_focus();
         this.emit('opened');
@@ -623,16 +838,27 @@ export const AppLauncher = GObject.registerClass({
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this.visible = false;
+                this._window.translation_y = 0;
                 this.emit('closed');
             },
         });
 
-        this._window.ease({
-            scale_x: 0.95,
-            scale_y: 0.95,
-            duration: 150,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
+        if (this._compactMode) {
+            this._window.ease({
+                scale_x: 0.96,
+                scale_y: 0.96,
+                translation_y: 8,
+                duration: 150,
+                mode: Clutter.AnimationMode.EASE_IN_QUAD,
+            });
+        } else {
+            this._window.ease({
+                scale_x: 0.95,
+                scale_y: 0.95,
+                duration: 150,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        }
     }
 
     toggle() {

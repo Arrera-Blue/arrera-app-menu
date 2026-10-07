@@ -109,6 +109,44 @@
 }
 
 /* ==========================================================================
+   Compact Mode Layout (Vertical Popover)
+   ========================================================================== */
+.mac-app-launcher-window.compact-mode {
+    border-radius: 24px;
+    padding: 16px 18px;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.65), 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+.mac-app-launcher-window.compact-mode .mac-launcher-header {
+    margin-bottom: 12px;
+    spacing: 8px;
+}
+
+.mac-app-launcher-window.compact-mode .mac-launcher-search-entry {
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 10.5pt;
+}
+
+.mac-app-launcher-window.compact-mode .mac-launcher-grid {
+    spacing: 12px;
+    padding: 2px 0px;
+}
+
+.mac-app-launcher-window.compact-mode .mac-app-item {
+    padding: 6px 2px;
+    border-radius: 14px;
+}
+
+.mac-app-launcher-window.compact-mode .mac-app-item-box {
+    spacing: 4px;
+}
+
+.mac-app-launcher-window.compact-mode .mac-app-label {
+    font-size: 8.5pt;
+}
+
+/* ==========================================================================
    Accent Colors Theme Synchronization
    ========================================================================== */
 .accent-orange .mac-app-launcher-window {

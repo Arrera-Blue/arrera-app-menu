@@ -14,5 +14,11 @@
       <description>Remplace complètement la vue et grille d'applications native de GNOME (Super+A, bouton 9 points du Dash, raccourcis et gestes) par le menu d'applications Arrera.</description>
     </key>
 
+    <key name="compact-mode" type="b">
+      <default>false</default>
+      <summary>Mode compact au-dessus du dock</summary>
+      <description>Si activé, affiche le menu sous forme de popover vertical compact au-dessus du dock Arrera (selon l'alignement des icônes) ou au centre de l'écran.</description>
+    </key>
+
   </schema>
 </schemalist>
