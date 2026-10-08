@@ -45,6 +45,9 @@ export default class ArreraAppMenuExtension extends Extension {
                     this._compactMode = this._settings.get_boolean('compact-mode');
                     this._appLauncher?.setCompactMode?.(this._compactMode);
                 },
+                'changed::theme-mode', () => {
+                    this._appLauncher?.syncThemeMode?.();
+                },
                 this
             );
         }
@@ -93,6 +96,10 @@ export default class ArreraAppMenuExtension extends Extension {
 
     get compactMode() {
         return this._compactMode;
+    }
+
+    get themeMode() {
+        return this._settings?.get_string('theme-mode') || 'expressive';
     }
 
     get isOpen() {

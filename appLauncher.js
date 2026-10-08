@@ -298,6 +298,21 @@ export const AppLauncher = GObject.registerClass({
         this._interfaceSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._interfaceSettings.connectObject('changed::accent-color', () => this._syncAccentColor(), this);
         this._syncAccentColor();
+
+        // Listen for dock theme changes for seamless synchronization
+        this._dockSettings = null;
+        try {
+            const schemaSource = Gio.SettingsSchemaSource.get_default();
+            if (schemaSource?.lookup('org.gnome.shell.extensions.dock', true)) {
+                this._dockSettings = new Gio.Settings({ schema_id: 'org.gnome.shell.extensions.dock' });
+                this._dockSettings.connectObject('changed::theme-mode', () => this.syncThemeMode(), this);
+            }
+        } catch (_e) {
+            this._dockSettings = null;
+        }
+
+        // Synchronize theme mode (expressive, black-outline, vanilla-gnome)
+        this.syncThemeMode();
     }
 
     _findDockActor() {
@@ -408,6 +423,47 @@ export const AppLauncher = GObject.registerClass({
 
         this.add_style_class_name(`accent-${colorName}`);
         this._window?.add_style_class_name(`accent-${colorName}`);
+    }
+
+    get themeMode() {
+        return this._currentThemeMode || 'expressive';
+    }
+
+    syncThemeMode() {
+        let mode = 'expressive';
+        const extSettings = this._extension?._settings;
+
+        if (extSettings) {
+            try {
+                // If user explicitly set a preference in app-menu, prioritize it
+                if (extSettings.get_user_value('theme-mode') !== null) {
+                    mode = extSettings.get_string('theme-mode');
+                } else if (this._dockSettings) {
+                    // Otherwise dynamically follow dock's theme-mode if available
+                    mode = this._dockSettings.get_string('theme-mode');
+                } else {
+                    mode = extSettings.get_string('theme-mode') || 'expressive';
+                }
+            } catch (_e) {
+                mode = extSettings.get_string('theme-mode') || 'expressive';
+            }
+        } else if (this._dockSettings) {
+            mode = this._dockSettings.get_string('theme-mode') || 'expressive';
+        }
+
+        const allModes = ['expressive', 'black-outline', 'vanilla-gnome'];
+        if (!allModes.includes(mode))
+            mode = 'expressive';
+
+        this._currentThemeMode = mode;
+
+        for (const m of allModes) {
+            this.remove_style_class_name(`theme-${m}`);
+            this._window?.remove_style_class_name(`theme-${m}`);
+        }
+
+        this.add_style_class_name(`theme-${mode}`);
+        this._window?.add_style_class_name(`theme-${mode}`);
     }
 
     get isOpen() {
@@ -893,6 +949,10 @@ export const AppLauncher = GObject.registerClass({
         if (this._interfaceSettings) {
             this._interfaceSettings.disconnectObject(this);
             this._interfaceSettings = null;
+        }
+        if (this._dockSettings) {
+            this._dockSettings.disconnectObject(this);
+            this._dockSettings = null;
         }
         this._appSystem.disconnectObject(this);
         if (Main.uiGroup.contains(this))

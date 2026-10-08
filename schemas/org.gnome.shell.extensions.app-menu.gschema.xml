@@ -20,5 +20,16 @@
       <description>Si activé, affiche le menu sous forme de popover vertical compact au-dessus du dock Arrera (selon l'alignement des icônes) ou au centre de l'écran.</description>
     </key>
 
+    <key name="theme-mode" type="s">
+      <choices>
+        <choice value="expressive"/>
+        <choice value="black-outline"/>
+        <choice value="vanilla-gnome"/>
+      </choices>
+      <default>'expressive'</default>
+      <summary>Mode du thème de couleur</summary>
+      <description>Style d'application de la couleur : expressive (fond du lanceur teinté de la couleur d'accentuation), black-outline (fond noir profond avec contour de la couleur d'accentuation) ou vanilla-gnome (couleur #38383b et style GNOME standard).</description>
+    </key>
+
   </schema>
 </schemalist>

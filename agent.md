@@ -31,6 +31,7 @@ Ce document sert de guide de référence complet et autonome pour tout agent d'I
 ├── appLauncher.js                  # Interface du lanceur flottant (AppLauncher, MacAppItem, recherche, grille, signaux)
 ├── stylesheet.css                  # Feuilles de style Clutter/St (effet verre dépoli, cartes d'apps, thèmes d'accent)
 ├── metadata.json                   # Métadonnées déclaratives de l'extension pour GNOME Shell (UUID, versions 45-50)
+├── THEMES.md                       # Guide détaillé des 3 thèmes (expressive, black-outline, vanilla-gnome)
 ├── GNOME_SETTINGS_INTEGRATION.md   # Documentation de référence des clés GSettings
 ├── settings.sh                     # Menu CLI interactif Bash pour activer/désactiver les réglages GSettings
 ├── compile_schemas.sh              # Script de compilation des schémas GSettings dans le projet et l'espace utilisateur
@@ -129,6 +130,7 @@ Le schéma est défini dans [schemas/org.gnome.shell.extensions.app-menu.gschema
 | `super-key-opens-launcher` | `b` (booléen) | `true` | `true`, `false` | Si activé, la touche Super ouvre le menu d'applications. Si désactivé, rétablit le comportement d'origine GNOME (aperçu des activités). |
 | `replace-gnome-app-menu` | `b` (booléen) | `true` | `true`, `false` | Si activé, remplace totalement la vue et la grille d'applications native de GNOME (Super+A, bouton 9 points du Dash, gestes tactiles) par le menu Arrera. |
 | `compact-mode` | `b` (booléen) | `false` | `true`, `false` | Si activé, affiche le menu sous forme de popover vertical compact au-dessus d'Arrera Dock (aligné selon les icônes du dock au centre ou à gauche) ou au centre de l'écran. |
+| `theme-mode` | `s` (chaîne) | `'expressive'` | `'expressive'`, `'black-outline'`, `'vanilla-gnome'` | Style du thème : expressive (surface acrylique teintée), black-outline (fond noir avec contour net de l'accent) ou vanilla-gnome (style GNOME Dash neutre #38383b). |
 
 ---
 

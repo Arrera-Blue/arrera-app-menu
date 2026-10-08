@@ -26,3 +26,13 @@
 * **Valeurs possibles** :
   * `true` : Active le mode compact vertical au-dessus du dock.
   * `false` *(défaut)* : Conserve le menu large centré d'origine.
+
+---
+
+### `theme-mode` (chaîne de caractères)
+* **Description** : Style d'application du thème de couleur pour le menu d'applications flottant.
+* **Valeurs possibles** :
+  * `'expressive'` *(défaut)* : Style Material 3 Expressive avec surface acrylique teintée de la couleur d'accentuation et halos lumineux.
+  * `'black-outline'` : Noir OLED profond (`#0c0c0f`) avec contour net de 2 px de la couleur d'accentuation active.
+  * `'vanilla-gnome'` : Gris neutre standard GNOME Shell (`#38383b`), sans bordure, ignore l'accentuation de couleur.
+

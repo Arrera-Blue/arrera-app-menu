@@ -3,10 +3,16 @@
  * Arrera App Menu - Extension GNOME Shell
  * Distribution Arrera Blue
  *
+ * Themes:
+ * 1. Expressive (Material 3 Expressive / Android 16 QPR2 - Default)
+ * 2. Black Outline (Deep OLED Black with crisp Accent Outline)
+ * 3. Vanilla GNOME (Standard #38383b GNOME Shell Dash style)
+ *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
+
 /* ==========================================================================
-   Applications Launcher Panel
+   1. Base Layout & Components
    ========================================================================== */
 
 /* Fullscreen transparent backdrop catching dismiss clicks */
@@ -14,12 +20,12 @@
     background-color: rgba(0, 0, 0, 0.35);
 }
 
-/* Floating Material 3 acrylic window */
+/* Base floating window */
 .mac-app-launcher-window {
     background-color: rgba(22, 22, 26, 0.92);
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 28px;
-    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.70);
     padding: 18px 24px;
 }
 
@@ -49,13 +55,13 @@
 .mac-launcher-search-entry:focus {
     background-color: rgba(255, 255, 255, 0.12);
     border-color: -st-accent-color;
-    box-shadow: 0 0 0 2px st-transparentize(-st-accent-color, 0.6);
+    box-shadow: 0 0 0 2px st-transparentize(-st-accent-color, 0.60);
 }
 
 /* Header close button */
 .mac-launcher-close-btn {
     background-color: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.10);
     border-radius: 14px;
     padding: 5px;
     color: #94a3b8;
@@ -109,7 +115,7 @@
 }
 
 /* ==========================================================================
-   Compact Mode Layout (Vertical Popover)
+   Compact Mode Layout (Vertical Popover above Arrera Dock)
    ========================================================================== */
 .mac-app-launcher-window.compact-mode {
     border-radius: 24px;
@@ -147,193 +153,600 @@
 }
 
 /* ==========================================================================
-   Accent Colors Theme Synchronization
+   2. Theme Mode: Expressif (theme-expressive / Par défaut)
+   Material 3 Expressive, surface acrylique teintée avec halo d'accentuation
    ========================================================================== */
-.accent-orange .mac-app-launcher-window {
-    background-color: rgba(48, 20, 6, 0.94);
-    border-color: rgba(255, 140, 60, 0.35);
-    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7), 0 0 32px rgba(237, 91, 0, 0.22);
+
+.theme-expressive .mac-app-launcher-window,
+.theme-expressive.mac-app-launcher-window {
+    background-color: st-mix(-st-accent-color, rgba(20, 20, 24, 0.92), 36%);
+    border: 1.5px solid st-transparentize(-st-accent-color, 0.40);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.70), 0 0 32px st-transparentize(-st-accent-color, 0.75);
 }
 
-.accent-orange .mac-launcher-title-icon {
+.theme-expressive .mac-app-item:hover {
+    background-color: st-transparentize(-st-accent-color, 0.80);
+    box-shadow: inset 0 0 0 1px st-transparentize(-st-accent-color, 0.60);
+}
+
+/* Expressive - Orange */
+.accent-orange .mac-app-launcher-window,
+.theme-expressive.accent-orange .mac-app-launcher-window,
+.accent-orange.theme-expressive .mac-app-launcher-window {
+    background-color: rgba(48, 20, 6, 0.94);
+    border-color: rgba(255, 140, 60, 0.35);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.70), 0 0 32px rgba(237, 91, 0, 0.22);
+}
+
+.accent-orange .mac-launcher-title-icon,
+.theme-expressive.accent-orange .mac-launcher-title-icon {
     color: #ff9d42;
 }
 
-.accent-orange .mac-launcher-search-entry:focus {
+.accent-orange .mac-launcher-search-entry:focus,
+.theme-expressive.accent-orange .mac-launcher-search-entry:focus {
     border-color: rgba(255, 140, 60, 0.80);
     box-shadow: 0 0 0 2px rgba(237, 91, 0, 0.30);
     caret-color: #ff9d42;
 }
 
-.accent-orange .mac-app-item:hover {
+.accent-orange .mac-app-item:hover,
+.theme-expressive.accent-orange .mac-app-item:hover {
     background-color: rgba(255, 150, 75, 0.18);
     box-shadow: inset 0 0 0 1px rgba(255, 160, 90, 0.38);
 }
 
-.accent-blue .mac-app-launcher-window {
+/* Expressive - Blue */
+.accent-blue .mac-app-launcher-window,
+.theme-expressive.accent-blue .mac-app-launcher-window,
+.accent-blue.theme-expressive .mac-app-launcher-window {
     background-color: rgba(12, 28, 56, 0.94);
     border-color: rgba(100, 175, 255, 0.35);
-    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7), 0 0 32px rgba(53, 132, 228, 0.22);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.70), 0 0 32px rgba(53, 132, 228, 0.22);
 }
 
-.accent-blue .mac-launcher-title-icon {
+.accent-blue .mac-launcher-title-icon,
+.theme-expressive.accent-blue .mac-launcher-title-icon {
     color: #62a0ea;
 }
 
-.accent-blue .mac-launcher-search-entry:focus {
+.accent-blue .mac-launcher-search-entry:focus,
+.theme-expressive.accent-blue .mac-launcher-search-entry:focus {
     border-color: rgba(100, 175, 255, 0.80);
     box-shadow: 0 0 0 2px rgba(53, 132, 228, 0.30);
     caret-color: #62a0ea;
 }
 
-.accent-blue .mac-app-item:hover {
+.accent-blue .mac-app-item:hover,
+.theme-expressive.accent-blue .mac-app-item:hover {
     background-color: rgba(100, 175, 255, 0.18);
     box-shadow: inset 0 0 0 1px rgba(110, 185, 255, 0.38);
 }
 
-.accent-teal .mac-app-launcher-window {
+/* Expressive - Teal */
+.accent-teal .mac-app-launcher-window,
+.theme-expressive.accent-teal .mac-app-launcher-window,
+.accent-teal.theme-expressive .mac-app-launcher-window {
     background-color: rgba(8, 34, 40, 0.94);
     border-color: rgba(70, 195, 220, 0.35);
-    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7), 0 0 32px rgba(33, 144, 164, 0.22);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.70), 0 0 32px rgba(33, 144, 164, 0.22);
 }
 
-.accent-teal .mac-launcher-title-icon {
+.accent-teal .mac-launcher-title-icon,
+.theme-expressive.accent-teal .mac-launcher-title-icon {
     color: #4dc4db;
 }
 
-.accent-teal .mac-launcher-search-entry:focus {
+.accent-teal .mac-launcher-search-entry:focus,
+.theme-expressive.accent-teal .mac-launcher-search-entry:focus {
     border-color: rgba(70, 195, 220, 0.80);
     box-shadow: 0 0 0 2px rgba(33, 144, 164, 0.30);
     caret-color: #4dc4db;
 }
 
-.accent-teal .mac-app-item:hover {
+.accent-teal .mac-app-item:hover,
+.theme-expressive.accent-teal .mac-app-item:hover {
     background-color: rgba(70, 195, 220, 0.18);
     box-shadow: inset 0 0 0 1px rgba(80, 205, 230, 0.38);
 }
 
-.accent-green .mac-app-launcher-window {
+/* Expressive - Green */
+.accent-green .mac-app-launcher-window,
+.theme-expressive.accent-green .mac-app-launcher-window,
+.accent-green.theme-expressive .mac-app-launcher-window {
     background-color: rgba(10, 34, 16, 0.94);
     border-color: rgba(105, 210, 125, 0.35);
-    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7), 0 0 32px rgba(58, 148, 74, 0.22);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.70), 0 0 32px rgba(58, 148, 74, 0.22);
 }
 
-.accent-green .mac-launcher-title-icon {
+.accent-green .mac-launcher-title-icon,
+.theme-expressive.accent-green .mac-launcher-title-icon {
     color: #57ab5a;
 }
 
-.accent-green .mac-launcher-search-entry:focus {
+.accent-green .mac-launcher-search-entry:focus,
+.theme-expressive.accent-green .mac-launcher-search-entry:focus {
     border-color: rgba(105, 210, 125, 0.80);
     box-shadow: 0 0 0 2px rgba(58, 148, 74, 0.30);
     caret-color: #57ab5a;
 }
 
-.accent-green .mac-app-item:hover {
+.accent-green .mac-app-item:hover,
+.theme-expressive.accent-green .mac-app-item:hover {
     background-color: rgba(105, 210, 125, 0.18);
     box-shadow: inset 0 0 0 1px rgba(115, 220, 135, 0.38);
 }
 
-.accent-yellow .mac-app-launcher-window {
+/* Expressive - Yellow */
+.accent-yellow .mac-app-launcher-window,
+.theme-expressive.accent-yellow .mac-app-launcher-window,
+.accent-yellow.theme-expressive .mac-app-launcher-window {
     background-color: rgba(44, 30, 4, 0.94);
     border-color: rgba(250, 195, 55, 0.35);
-    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7), 0 0 32px rgba(200, 136, 0, 0.22);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.70), 0 0 32px rgba(200, 136, 0, 0.22);
 }
 
-.accent-yellow .mac-launcher-title-icon {
+.accent-yellow .mac-launcher-title-icon,
+.theme-expressive.accent-yellow .mac-launcher-title-icon {
     color: #f6c144;
 }
 
-.accent-yellow .mac-launcher-search-entry:focus {
+.accent-yellow .mac-launcher-search-entry:focus,
+.theme-expressive.accent-yellow .mac-launcher-search-entry:focus {
     border-color: rgba(250, 195, 55, 0.80);
     box-shadow: 0 0 0 2px rgba(200, 136, 0, 0.30);
     caret-color: #f6c144;
 }
 
-.accent-yellow .mac-app-item:hover {
+.accent-yellow .mac-app-item:hover,
+.theme-expressive.accent-yellow .mac-app-item:hover {
     background-color: rgba(250, 195, 55, 0.18);
     box-shadow: inset 0 0 0 1px rgba(255, 205, 65, 0.38);
 }
 
-.accent-red .mac-app-launcher-window {
+/* Expressive - Red */
+.accent-red .mac-app-launcher-window,
+.theme-expressive.accent-red .mac-app-launcher-window,
+.accent-red.theme-expressive .mac-app-launcher-window {
     background-color: rgba(50, 10, 16, 0.94);
     border-color: rgba(255, 105, 125, 0.35);
-    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7), 0 0 32px rgba(230, 45, 66, 0.22);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.70), 0 0 32px rgba(230, 45, 66, 0.22);
 }
 
-.accent-red .mac-launcher-title-icon {
+.accent-red .mac-launcher-title-icon,
+.theme-expressive.accent-red .mac-launcher-title-icon {
     color: #f85166;
 }
 
-.accent-red .mac-launcher-search-entry:focus {
+.accent-red .mac-launcher-search-entry:focus,
+.theme-expressive.accent-red .mac-launcher-search-entry:focus {
     border-color: rgba(255, 105, 125, 0.80);
     box-shadow: 0 0 0 2px rgba(230, 45, 66, 0.30);
     caret-color: #f85166;
 }
 
-.accent-red .mac-app-item:hover {
+.accent-red .mac-app-item:hover,
+.theme-expressive.accent-red .mac-app-item:hover {
     background-color: rgba(255, 105, 125, 0.18);
     box-shadow: inset 0 0 0 1px rgba(255, 115, 135, 0.38);
 }
 
-.accent-pink .mac-app-launcher-window {
+/* Expressive - Pink */
+.accent-pink .mac-app-launcher-window,
+.theme-expressive.accent-pink .mac-app-launcher-window,
+.accent-pink.theme-expressive .mac-app-launcher-window {
     background-color: rgba(46, 14, 32, 0.94);
     border-color: rgba(250, 135, 195, 0.35);
-    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7), 0 0 32px rgba(213, 97, 153, 0.22);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.70), 0 0 32px rgba(213, 97, 153, 0.22);
 }
 
-.accent-pink .mac-launcher-title-icon {
+.accent-pink .mac-launcher-title-icon,
+.theme-expressive.accent-pink .mac-launcher-title-icon {
     color: #e587b6;
 }
 
-.accent-pink .mac-launcher-search-entry:focus {
+.accent-pink .mac-launcher-search-entry:focus,
+.theme-expressive.accent-pink .mac-launcher-search-entry:focus {
     border-color: rgba(250, 135, 195, 0.80);
     box-shadow: 0 0 0 2px rgba(213, 97, 153, 0.30);
     caret-color: #e587b6;
 }
 
-.accent-pink .mac-app-item:hover {
+.accent-pink .mac-app-item:hover,
+.theme-expressive.accent-pink .mac-app-item:hover {
     background-color: rgba(250, 135, 195, 0.18);
     box-shadow: inset 0 0 0 1px rgba(255, 145, 205, 0.38);
 }
 
-.accent-purple .mac-app-launcher-window {
+/* Expressive - Purple */
+.accent-purple .mac-app-launcher-window,
+.theme-expressive.accent-purple .mac-app-launcher-window,
+.accent-purple.theme-expressive .mac-app-launcher-window {
     background-color: rgba(36, 12, 45, 0.94);
     border-color: rgba(195, 110, 235, 0.35);
-    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7), 0 0 32px rgba(145, 65, 172, 0.22);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.70), 0 0 32px rgba(145, 65, 172, 0.22);
 }
 
-.accent-purple .mac-launcher-title-icon {
+.accent-purple .mac-launcher-title-icon,
+.theme-expressive.accent-purple .mac-launcher-title-icon {
     color: #b363d6;
 }
 
-.accent-purple .mac-launcher-search-entry:focus {
+.accent-purple .mac-launcher-search-entry:focus,
+.theme-expressive.accent-purple .mac-launcher-search-entry:focus {
     border-color: rgba(195, 110, 235, 0.80);
     box-shadow: 0 0 0 2px rgba(145, 65, 172, 0.30);
     caret-color: #b363d6;
 }
 
-.accent-purple .mac-app-item:hover {
+.accent-purple .mac-app-item:hover,
+.theme-expressive.accent-purple .mac-app-item:hover {
     background-color: rgba(195, 110, 235, 0.18);
     box-shadow: inset 0 0 0 1px rgba(205, 120, 245, 0.38);
 }
 
-.accent-slate .mac-app-launcher-window {
+/* Expressive - Slate */
+.accent-slate .mac-app-launcher-window,
+.theme-expressive.accent-slate .mac-app-launcher-window,
+.accent-slate.theme-expressive .mac-app-launcher-window {
     background-color: rgba(25, 32, 40, 0.94);
     border-color: rgba(160, 185, 205, 0.35);
-    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7), 0 0 32px rgba(111, 131, 150, 0.22);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.70), 0 0 32px rgba(111, 131, 150, 0.22);
 }
 
-.accent-slate .mac-launcher-title-icon {
+.accent-slate .mac-launcher-title-icon,
+.theme-expressive.accent-slate .mac-launcher-title-icon {
     color: #9cb2c6;
 }
 
-.accent-slate .mac-launcher-search-entry:focus {
+.accent-slate .mac-launcher-search-entry:focus,
+.theme-expressive.accent-slate .mac-launcher-search-entry:focus {
     border-color: rgba(160, 185, 205, 0.80);
     box-shadow: 0 0 0 2px rgba(111, 131, 150, 0.30);
     caret-color: #9cb2c6;
 }
 
-.accent-slate .mac-app-item:hover {
+.accent-slate .mac-app-item:hover,
+.theme-expressive.accent-slate .mac-app-item:hover {
     background-color: rgba(160, 185, 205, 0.18);
     box-shadow: inset 0 0 0 1px rgba(170, 195, 215, 0.38);
+}
+
+/* ==========================================================================
+   3. Theme Mode: Contour noir / Accentué (theme-black-outline)
+   Noir OLED profond avec contour 2px de la couleur d'accentuation
+   ========================================================================== */
+
+.theme-black-outline .mac-app-launcher-window,
+.theme-black-outline.mac-app-launcher-window {
+    background-color: rgba(10, 10, 14, 0.95);
+    border: 2px solid -st-accent-color;
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.88);
+}
+
+.theme-black-outline .mac-launcher-search-entry {
+    background-color: rgba(0, 0, 0, 0.50);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    caret-color: -st-accent-color;
+}
+
+.theme-black-outline .mac-launcher-search-entry:focus {
+    background-color: rgba(0, 0, 0, 0.65);
+    border: 2px solid -st-accent-color;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.70);
+    caret-color: -st-accent-color;
+}
+
+.theme-black-outline .mac-app-item:hover {
+    background-color: rgba(255, 255, 255, 0.10);
+    box-shadow: inset 0 0 0 1px st-transparentize(-st-accent-color, 0.50);
+}
+
+.theme-black-outline .mac-app-item:active {
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Black Outline - Orange */
+.theme-black-outline.accent-orange .mac-app-launcher-window,
+.theme-black-outline .accent-orange .mac-app-launcher-window,
+.accent-orange.theme-black-outline .mac-app-launcher-window {
+    background-color: rgba(12, 12, 15, 0.95);
+    border: 2px solid #ed5b00;
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.88);
+}
+
+.theme-black-outline.accent-orange .mac-launcher-title-icon,
+.theme-black-outline .accent-orange .mac-launcher-title-icon {
+    color: #ed5b00;
+}
+
+.theme-black-outline.accent-orange .mac-launcher-search-entry:focus,
+.theme-black-outline .accent-orange .mac-launcher-search-entry:focus {
+    border: 2px solid #ed5b00;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.70);
+    caret-color: #ed5b00;
+}
+
+.theme-black-outline.accent-orange .mac-app-item:hover,
+.theme-black-outline .accent-orange .mac-app-item:hover {
+    background-color: rgba(237, 91, 0, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(237, 91, 0, 0.50);
+}
+
+/* Black Outline - Blue */
+.theme-black-outline.accent-blue .mac-app-launcher-window,
+.theme-black-outline .accent-blue .mac-app-launcher-window,
+.accent-blue.theme-black-outline .mac-app-launcher-window {
+    background-color: rgba(12, 12, 15, 0.95);
+    border: 2px solid #3584e4;
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.88);
+}
+
+.theme-black-outline.accent-blue .mac-launcher-title-icon,
+.theme-black-outline .accent-blue .mac-launcher-title-icon {
+    color: #3584e4;
+}
+
+.theme-black-outline.accent-blue .mac-launcher-search-entry:focus,
+.theme-black-outline .accent-blue .mac-launcher-search-entry:focus {
+    border: 2px solid #3584e4;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.70);
+    caret-color: #3584e4;
+}
+
+.theme-black-outline.accent-blue .mac-app-item:hover,
+.theme-black-outline .accent-blue .mac-app-item:hover {
+    background-color: rgba(53, 132, 228, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(53, 132, 228, 0.50);
+}
+
+/* Black Outline - Teal */
+.theme-black-outline.accent-teal .mac-app-launcher-window,
+.theme-black-outline .accent-teal .mac-app-launcher-window,
+.accent-teal.theme-black-outline .mac-app-launcher-window {
+    background-color: rgba(12, 12, 15, 0.95);
+    border: 2px solid #2190a4;
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.88);
+}
+
+.theme-black-outline.accent-teal .mac-launcher-title-icon,
+.theme-black-outline .accent-teal .mac-launcher-title-icon {
+    color: #2190a4;
+}
+
+.theme-black-outline.accent-teal .mac-launcher-search-entry:focus,
+.theme-black-outline .accent-teal .mac-launcher-search-entry:focus {
+    border: 2px solid #2190a4;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.70);
+    caret-color: #2190a4;
+}
+
+.theme-black-outline.accent-teal .mac-app-item:hover,
+.theme-black-outline .accent-teal .mac-app-item:hover {
+    background-color: rgba(33, 144, 164, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(33, 144, 164, 0.50);
+}
+
+/* Black Outline - Green */
+.theme-black-outline.accent-green .mac-app-launcher-window,
+.theme-black-outline .accent-green .mac-app-launcher-window,
+.accent-green.theme-black-outline .mac-app-launcher-window {
+    background-color: rgba(12, 12, 15, 0.95);
+    border: 2px solid #3a944a;
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.88);
+}
+
+.theme-black-outline.accent-green .mac-launcher-title-icon,
+.theme-black-outline .accent-green .mac-launcher-title-icon {
+    color: #3a944a;
+}
+
+.theme-black-outline.accent-green .mac-launcher-search-entry:focus,
+.theme-black-outline .accent-green .mac-launcher-search-entry:focus {
+    border: 2px solid #3a944a;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.70);
+    caret-color: #3a944a;
+}
+
+.theme-black-outline.accent-green .mac-app-item:hover,
+.theme-black-outline .accent-green .mac-app-item:hover {
+    background-color: rgba(58, 148, 74, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(58, 148, 74, 0.50);
+}
+
+/* Black Outline - Yellow */
+.theme-black-outline.accent-yellow .mac-app-launcher-window,
+.theme-black-outline .accent-yellow .mac-app-launcher-window,
+.accent-yellow.theme-black-outline .mac-app-launcher-window {
+    background-color: rgba(12, 12, 15, 0.95);
+    border: 2px solid #c88800;
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.88);
+}
+
+.theme-black-outline.accent-yellow .mac-launcher-title-icon,
+.theme-black-outline .accent-yellow .mac-launcher-title-icon {
+    color: #c88800;
+}
+
+.theme-black-outline.accent-yellow .mac-launcher-search-entry:focus,
+.theme-black-outline .accent-yellow .mac-launcher-search-entry:focus {
+    border: 2px solid #c88800;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.70);
+    caret-color: #c88800;
+}
+
+.theme-black-outline.accent-yellow .mac-app-item:hover,
+.theme-black-outline .accent-yellow .mac-app-item:hover {
+    background-color: rgba(200, 136, 0, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(200, 136, 0, 0.50);
+}
+
+/* Black Outline - Red */
+.theme-black-outline.accent-red .mac-app-launcher-window,
+.theme-black-outline .accent-red .mac-app-launcher-window,
+.accent-red.theme-black-outline .mac-app-launcher-window {
+    background-color: rgba(12, 12, 15, 0.95);
+    border: 2px solid #e62d42;
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.88);
+}
+
+.theme-black-outline.accent-red .mac-launcher-title-icon,
+.theme-black-outline .accent-red .mac-launcher-title-icon {
+    color: #e62d42;
+}
+
+.theme-black-outline.accent-red .mac-launcher-search-entry:focus,
+.theme-black-outline .accent-red .mac-launcher-search-entry:focus {
+    border: 2px solid #e62d42;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.70);
+    caret-color: #e62d42;
+}
+
+.theme-black-outline.accent-red .mac-app-item:hover,
+.theme-black-outline .accent-red .mac-app-item:hover {
+    background-color: rgba(230, 45, 66, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(230, 45, 66, 0.50);
+}
+
+/* Black Outline - Pink */
+.theme-black-outline.accent-pink .mac-app-launcher-window,
+.theme-black-outline .accent-pink .mac-app-launcher-window,
+.accent-pink.theme-black-outline .mac-app-launcher-window {
+    background-color: rgba(12, 12, 15, 0.95);
+    border: 2px solid #d56199;
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.88);
+}
+
+.theme-black-outline.accent-pink .mac-launcher-title-icon,
+.theme-black-outline .accent-pink .mac-launcher-title-icon {
+    color: #d56199;
+}
+
+.theme-black-outline.accent-pink .mac-launcher-search-entry:focus,
+.theme-black-outline .accent-pink .mac-launcher-search-entry:focus {
+    border: 2px solid #d56199;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.70);
+    caret-color: #d56199;
+}
+
+.theme-black-outline.accent-pink .mac-app-item:hover,
+.theme-black-outline .accent-pink .mac-app-item:hover {
+    background-color: rgba(213, 97, 153, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(213, 97, 153, 0.50);
+}
+
+/* Black Outline - Purple */
+.theme-black-outline.accent-purple .mac-app-launcher-window,
+.theme-black-outline .accent-purple .mac-app-launcher-window,
+.accent-purple.theme-black-outline .mac-app-launcher-window {
+    background-color: rgba(12, 12, 15, 0.95);
+    border: 2px solid #9141ac;
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.88);
+}
+
+.theme-black-outline.accent-purple .mac-launcher-title-icon,
+.theme-black-outline .accent-purple .mac-launcher-title-icon {
+    color: #9141ac;
+}
+
+.theme-black-outline.accent-purple .mac-launcher-search-entry:focus,
+.theme-black-outline .accent-purple .mac-launcher-search-entry:focus {
+    border: 2px solid #9141ac;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.70);
+    caret-color: #9141ac;
+}
+
+.theme-black-outline.accent-purple .mac-app-item:hover,
+.theme-black-outline .accent-purple .mac-app-item:hover {
+    background-color: rgba(145, 65, 172, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(145, 65, 172, 0.50);
+}
+
+/* Black Outline - Slate */
+.theme-black-outline.accent-slate .mac-app-launcher-window,
+.theme-black-outline .accent-slate .mac-app-launcher-window,
+.accent-slate.theme-black-outline .mac-app-launcher-window {
+    background-color: rgba(12, 12, 15, 0.95);
+    border: 2px solid #6f8396;
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.88);
+}
+
+.theme-black-outline.accent-slate .mac-launcher-title-icon,
+.theme-black-outline .accent-slate .mac-launcher-title-icon {
+    color: #6f8396;
+}
+
+.theme-black-outline.accent-slate .mac-launcher-search-entry:focus,
+.theme-black-outline .accent-slate .mac-launcher-search-entry:focus {
+    border: 2px solid #6f8396;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.70);
+    caret-color: #6f8396;
+}
+
+.theme-black-outline.accent-slate .mac-app-item:hover,
+.theme-black-outline .accent-slate .mac-app-item:hover {
+    background-color: rgba(111, 131, 150, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(111, 131, 150, 0.50);
+}
+
+/* ==========================================================================
+   4. Theme Mode: Vanilla GNOME (theme-vanilla-gnome)
+   Fidélité absolue au Dash et aux panneaux natifs GNOME Shell (#38383b)
+   Totalement neutre, sans accentuation colorée
+   ========================================================================== */
+
+.theme-vanilla-gnome .mac-app-launcher-window,
+.theme-vanilla-gnome.mac-app-launcher-window {
+    background-color: #38383b !important;
+    border: none !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+}
+
+.theme-vanilla-gnome .mac-launcher-title-icon {
+    color: #ffffff !important;
+}
+
+.theme-vanilla-gnome .mac-launcher-search-entry {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    caret-color: #ffffff !important;
+}
+
+.theme-vanilla-gnome .mac-launcher-search-entry:focus {
+    background-color: rgba(255, 255, 255, 0.18) !important;
+    border: none !important;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35) !important;
+    caret-color: #ffffff !important;
+}
+
+.theme-vanilla-gnome .mac-launcher-close-btn {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+.theme-vanilla-gnome .mac-launcher-close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.16) !important;
+    color: #ffffff !important;
+}
+
+.theme-vanilla-gnome .mac-app-item:hover {
+    background-color: rgba(255, 255, 255, 0.10) !important;
+    box-shadow: none !important;
+}
+
+.theme-vanilla-gnome .mac-app-item:active {
+    background-color: rgba(255, 255, 255, 0.18) !important;
+    box-shadow: none !important;
+}
+
+.theme-vanilla-gnome .mac-app-item:focus {
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35) !important;
+}
+
+.theme-vanilla-gnome .mac-app-label {
+    color: #ffffff !important;
 }
