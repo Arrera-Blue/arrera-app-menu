@@ -8,9 +8,8 @@ Liste des fonctionnalités manquantes pour permettre une intégration parfaite a
 ---
 
 ## 1. Ancrage dynamique pour le Dock latéral droit (Pour le Design 3)
-- [ ] **Alignement vertical selon le bouton Show Apps (`showAppsY`)** :
-  - Dans `appLauncher.js` (`_updateGeometry()`), quand le dock est en position `right`, la position $Y$ est actuellement figée au centre de l'écran (`Math.round((monitor.height - h) / 2)`).
-  - Calculer la position $Y$ d'ouverture en fonction de la position exacte du bouton Show Apps sur l'axe vertical, afin que le menu apparaisse directement en regard du bouton situé dans le tiers supérieur de l'écran.
+- [x] **Alignement vertical selon le bouton Show Apps (`showAppsY`)** :
+  - Dans `appLauncher.js` (`_updateGeometry()`), quand le dock est en position `right`, la position $Y$ est calculée dynamiquement selon la coordonnée `showAppsY` pour aligner le menu en regard du bouton.
 - [ ] **Adaptation de la forme / layout pour panneau latéral** :
   - Prévoir un affichage plus vertical / flyout latéral adapté lorsque l'écran s'ouvre depuis le bord droit.
 

@@ -707,11 +707,21 @@ export const AppLauncher = GObject.registerClass({
         } else if (dockInfo.position === 'left') {
             const dockRight = (dockInfo.pillX - monitor.x) + dockInfo.pillW;
             targetX = Math.max(16, dockRight + MARGIN_DOCK);
-            targetY = Math.round((monitor.height - h) / 2);
+            if (dockInfo.showAppsY !== null) {
+                const btnRelY = dockInfo.showAppsY - monitor.y;
+                targetY = Math.max(topPanelHeight + 8, Math.min(monitor.height - h - 16, btnRelY - Math.round(h * 0.25)));
+            } else {
+                targetY = Math.round((monitor.height - h) / 2);
+            }
         } else if (dockInfo.position === 'right') {
             const dockLeft = dockInfo.pillX - monitor.x;
             targetX = Math.max(16, dockLeft - w - MARGIN_DOCK);
-            targetY = Math.round((monitor.height - h) / 2);
+            if (dockInfo.showAppsY !== null) {
+                const btnRelY = dockInfo.showAppsY - monitor.y;
+                targetY = Math.max(topPanelHeight + 8, Math.min(monitor.height - h - 16, btnRelY - Math.round(h * 0.25)));
+            } else {
+                targetY = Math.round((monitor.height - h) / 2);
+            }
         } else {
             // Position en bas (standard) : au-dessus du dock
             const dockTop = (dockInfo.pillY > 0)
