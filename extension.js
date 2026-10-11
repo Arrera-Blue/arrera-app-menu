@@ -48,6 +48,9 @@ export default class ArreraAppMenuExtension extends Extension {
                 'changed::theme-mode', () => {
                     this._appLauncher?.syncThemeMode?.();
                 },
+                'changed::menu-position', () => {
+                    this._appLauncher?.setMenuPosition?.(this.menuPosition);
+                },
                 this
             );
         }
@@ -100,6 +103,10 @@ export default class ArreraAppMenuExtension extends Extension {
 
     get themeMode() {
         return this._settings?.get_string('theme-mode') || 'expressive';
+    }
+
+    get menuPosition() {
+        return this._settings?.get_string('menu-position') || 'center';
     }
 
     get isOpen() {

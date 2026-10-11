@@ -31,5 +31,17 @@
       <description>Style d'application de la couleur : expressive (fond du lanceur teinté de la couleur d'accentuation), black-outline (fond noir profond avec contour de la couleur d'accentuation) ou vanilla-gnome (couleur #38383b et style GNOME standard).</description>
     </key>
 
+    <key name="menu-position" type="s">
+      <choices>
+        <choice value="center"/>
+        <choice value="bottom-left"/>
+        <choice value="top-left"/>
+        <choice value="top-right"/>
+      </choices>
+      <default>'center'</default>
+      <summary>Emplacement du menu d'applications</summary>
+      <description>Définit la position du menu à l'écran : 'center' (au centre), 'bottom-left' (en bas à gauche), 'top-left' (en haut à gauche) ou 'top-right' (en haut à droite).</description>
+    </key>
+
   </schema>
 </schemalist>
