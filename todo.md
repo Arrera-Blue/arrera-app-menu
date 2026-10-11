@@ -7,18 +7,14 @@ Liste des fonctionnalités manquantes pour permettre une intégration parfaite a
 
 ---
 
-## 1. Ancrage dynamique pour le Dock latéral droit (Pour le Design 3)
-- [x] **Alignement vertical selon le bouton Show Apps (`showAppsY`)** :
-  - Dans `appLauncher.js` (`_updateGeometry()`), quand le dock est en position `right`, la position $Y$ est calculée dynamiquement selon la coordonnée `showAppsY` pour aligner le menu en regard du bouton.
-- [ ] **Adaptation de la forme / layout pour panneau latéral** :
-  - Prévoir un affichage plus vertical / flyout latéral adapté lorsque l'écran s'ouvre depuis le bord droit.
-
----
-
-## 2. Mode « Menu Démarrer » bas-gauche (Pour le Design 2)
-- [ ] **Ancrage strict en coin inférieur gauche** :
-  - Ajouter un mode d'ancrage spécifique au coin bas-gauche avec marge minimale par rapport à la barre inférieure (style Start Menu Windows / ChromeOS).
-  - Déclencher automatiquement cet ancrage lorsque le dock est en mode barre avec alignement à gauche (`bar-icons-alignment = 'left'`), même si le mode compact n'est pas coché par l'utilisateur.
+## 1. Positionnement explicite du lanceur (menu-position)
+- [x] **Support des positions géométriques explicites** :
+  - `center` : centré sur l'écran (Design 1).
+  - `bottom-left` : ancré en bas à gauche au-dessus de la barre (Design 2 / Menu Démarrer).
+  - `top-right` : ancré en haut à droite près du dock latéral (Design 3).
+  - `top-left` : ancré en haut à gauche.
+  - Décalage dynamique propre évitant le chevauchement avec le dock (`globalThis.arreraDock`).
+  - Animations directionnelles d'ouverture/fermeture adaptées à chaque position.
 
 ---
 
