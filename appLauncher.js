@@ -314,6 +314,9 @@ export const AppLauncher = GObject.registerClass({
 
         // Synchronize theme mode (expressive, black-outline, vanilla-gnome)
         this.syncThemeMode();
+
+        // Initial geometry calculation
+        this._updateGeometry();
     }
 
     _findDockActor() {
@@ -421,8 +424,7 @@ export const AppLauncher = GObject.registerClass({
         if (this._menuPosition === pos)
             return;
         this._menuPosition = pos || 'center';
-        if (this._isOpen)
-            this._updateGeometry();
+        this._updateGeometry();
     }
 
     _buildHeader() {
@@ -653,6 +655,17 @@ export const AppLauncher = GObject.registerClass({
             h = availableHeight;
 
         const pos = this._menuPosition || 'center';
+        if (pos === 'center') {
+            this._window.x_align = Clutter.ActorAlign.CENTER;
+            this._window.y_align = Clutter.ActorAlign.CENTER;
+            this._window.margin_left = 0;
+            this._window.margin_top = 0;
+            this._window.margin_right = 0;
+            this._window.margin_bottom = 0;
+            this._window.set_size(w, h);
+            return;
+        }
+
         let targetX;
         let targetY;
 
@@ -669,7 +682,6 @@ export const AppLauncher = GObject.registerClass({
                 targetX = rightX;
                 targetY = topY;
                 break;
-            case 'center':
             default:
                 targetX = Math.round((monitor.width - w) / 2);
                 targetY = Math.round((monitor.height - h) / 2);

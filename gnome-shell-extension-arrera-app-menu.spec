@@ -2,7 +2,7 @@
 
 Name:           gnome-shell-extension-arrera-app-menu
 Version:        1.0.0
-Release:        0.1.beta1%{?dist}
+Release:        0.3.beta1%{?dist}
 Summary:        Menu d'applications moderne pour GNOME Shell (Distribution Arrera Blue)
 
 License:        GPL-2.0-or-later
